@@ -3,6 +3,7 @@
   "description": "try using p2p without html",
   "version": "0.0.1",
   "dependencies": {
+    "commander": "^2.9.0",
     "socket.io": "^1.4.5",
     "socket.io-p2p": "^2.2.0",
     "socket.io-p2p-server": "^1.2.0"
