@@ -9,10 +9,9 @@ http.listen(8000, function() {
 });
 
 io.on('connection', function(socket) {
-    console.log('new client connection arrives');
-
+    
+    
+    
     // receiving socket message
-    socket.on('test', function(data) {
-        console.log(data);
-    });
+    
 });
