@@ -10,7 +10,9 @@ http.listen(8000, function() {
 
 io.on('connection', function(socket) {
     
-    
+    socket.on('new-connection', function(data) {
+        console.log(data);
+    });
     
     // receiving socket message
     

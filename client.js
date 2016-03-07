@@ -1,5 +1,8 @@
 window = process;   // simulate window global object on CLI environment ;-p
 
+// import fileWatcher
+var Watcher = require('./libs/file_watcher');
+
 // utility libs
 var program = require('commander');
 
@@ -11,7 +14,17 @@ var p2p = require('socket.io-p2p');
 var clientData = {
     nodeName: 'alfin',
     filesAvailability: true
-}
-var s = io.connect('http://localhost:8000', function() {
-    
+};
+
+var s = io.connect('http://localhost:8000');
+s.emit('new-connection', clientData);
+
+// set up file watcher
+var w = new Watcher('./public');
+var fileList = [];
+w.on('process', function(files) {
+    fileList = files;
+    console.log(fileList);
 });
+
+w.start();
