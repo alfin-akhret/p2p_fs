@@ -3,21 +3,11 @@ window = process;   // simulate window global object on CLI environment ;-p
 // import fileWatcher
 var Watcher = require('./libs/file_watcher');
 
-// utility libs
-var program = require('commander');
+// import config file
+var config = require('./config.js');
+var serverAddr = config.server.ipAddress;
+var serverPort = config.server.port;
 
-// Socket io libs
-var io = require('socket.io-client');
-var p2p = require('socket.io-p2p');
-
-// client config
-var clientData = {
-    nodeName: 'alfin',
-    filesAvailability: true
-};
-
-var s = io.connect('http://localhost:8000');
-s.emit('new-connection', clientData);
 
 // set up file watcher
 var w = new Watcher('./public');
@@ -28,3 +18,15 @@ w.on('process', function(files) {
 });
 
 w.start();
+
+// utility libs
+var program = require('commander');
+
+// Socket io libs
+var io = require('socket.io-client');
+var p2p = require('socket.io-p2p');
+
+var s = io.connect(serverAddr + ':' + serverPort);
+s.emit('new-connection', config.client);
+
+

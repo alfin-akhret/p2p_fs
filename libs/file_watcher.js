@@ -34,14 +34,3 @@ Watcher.prototype.start = function() {
 }
 
 module.exports = Watcher;
-
-// test
-// var fileList = [];
-// var newWatcher = new Watcher('./watchDir');
-// newWatcher.on('process', function(files) {
-//    fileList = files;
-//     console.log(fileList);
-// });
-
-
-// newWatcher.start();

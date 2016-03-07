@@ -8,12 +8,11 @@ http.listen(8000, function() {
     console.log("Server is listening on port 8000");
 });
 
+var clientsData = [];
+
 io.on('connection', function(socket) {
     
     socket.on('new-connection', function(data) {
-        console.log(data);
+        clientsData[socket.id] = data;
     });
-    
-    // receiving socket message
-    
 });
