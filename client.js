@@ -4,6 +4,7 @@ window = process;   // simulate window global object on CLI environment ;-p
 var Watcher = require('./libs/file_watcher');
 var program = require('commander');
 var prompt = require('prompt');
+var colors = require('colors');
 
 // CONFIGURATION
 // ===================================================================
@@ -43,11 +44,37 @@ program
             console.log('Peer: ' + data.username + ' is disconnected');
         });
 
-        // run file watcher
-        w.start();
-        w.on('process', function(files) {
-            fileList = files;
-        });  
+        (function command() {
+            prompt.get(['command'], function(err, r) {
+                // early error return for exit
+                if (err) {
+                    console.log('\nTo exit, press ^C again.');
+                    return;
+                }
+
+                var c = r.command;
+                switch (c) {
+                    case 'h':
+                        console.log('show all available commands');
+                        break;
+                    case 'peers':
+                        console.log('show all connected peers');
+                        break;
+                    case 'peek':
+                        // if peers username provided
+                        // show all files shared by peers
+                        break;
+                    case 'download':
+                        // if peers username and target file provided
+                        // open p2p connection to peer and download the target file
+                        break;
+                    default:
+                        console.log('Unknown command. Type \'h\' to see all availbale commands');
+                        break;
+                }
+                command();
+            })
+        })();
     })
     .parse(process.argv);
 

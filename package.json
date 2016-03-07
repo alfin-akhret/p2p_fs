@@ -3,6 +3,7 @@
   "description": "try using p2p without html",
   "version": "0.0.1",
   "dependencies": {
+    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "prompt": "^1.0.0",
     "socket.io": "^1.4.5",
