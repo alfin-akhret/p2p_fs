@@ -15,4 +15,9 @@ io.on('connection', function(socket) {
     socket.on('new-connection', function(data) {
         clientsData[socket.id] = data;
     });
+
+    socket.on('disconnect', function() {
+        socket.broadcast.emit('client_disconnect', clientsData[socket.id]);
+        delete clientsData[socket.id];
+    });
 });
