@@ -12,7 +12,7 @@ var clientsData = [];
 
 io.on('connection', function(socket) {
 
-    socket.on('newConnection', function(data) {
+    socket.on('new_connection', function(data) {
         clientsData[socket.id] = data;
     });
 
@@ -33,6 +33,14 @@ io.on('connection', function(socket) {
 
     socket.on('updateFileIndex', function(data) {
         clientsData[socket.id].files = data;
+    });
+
+    socket.on('ls', function(data) {
+        for (var i in clientsData) {
+            if (clientsData[i].username === data) {
+                socket.emit('files_found', clientsData[i].files);
+            }
+        }
     });
 
 });

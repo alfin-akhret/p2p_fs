@@ -37,7 +37,7 @@ program
         }
 
         // send new connection event to the server
-        s.emit('newConnection', config.client);
+        s.emit('new_connection', config.client);
 
         // handler for:
         // client_disconnect event 
@@ -54,23 +54,9 @@ program
                 }
 
                 var c = r.command;
-                switch (c) {
-                    case 'h':
-                        console.log('show all available commands');
-                        break;
-
-                    case 'publish':
-                        console.log('Publishing files...');
-                        w.start();
-
-                        w.on('process', function(files) {
-                            fileList = files;
-                            s.emit('updateFileIndex', fileList);
-                        });
-
-                        break;
-
-                    case 'peers':
+                
+                if (c) {
+                    if (c === 'peers') {
                         s.emit('show_peers', {message: 'get all peers'});
                         s.on('all_peers', function(data) {
                             console.log('Showing all online peers:');
@@ -78,20 +64,39 @@ program
                                 console.log(i +'. ' + data[i]);
                             }
                         });
-                        break;
+                        command();
 
-                    case 'peek':
-                        // if peers username provided
-                        // show all files shared by peers
-                        break;
-                    case 'download':
-                        // if peers username and target file provided
-                        // open p2p connection to peer and download the target file
-                        break;
-                    default:
-                        console.log('Unknown command. Type \'h\' to see all availbale commands');
-                        break;
+                        return;
+                    }
+
+                    if (c === 'publish') {
+                        console.log('Publishing files...');
+                        w.start();
+
+                        w.on('process', function(files) {
+                            fileList = files;
+                            s.emit('updateFileIndex', fileList);
+                        });
+                        command();
+                        return;
+                    } 
+
+                    if (c.split(' ')[0] === 'ls') {
+                        var peer = c.split(' ')[1];
+                        console.log('Files publish by ' + peer);
+
+                        s.emit('ls', peer);
+
+                        s.on('files_found', function(data) {
+                            for (var i in data) {
+                                console.log(data[i]);
+                            }
+                        });
+                        command();
+                        return;
+                    }
                 }
+
                 command();
             })
         })();
