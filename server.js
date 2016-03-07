@@ -11,8 +11,8 @@ http.listen(8000, function() {
 var clientsData = [];
 
 io.on('connection', function(socket) {
-    
-    socket.on('new-connection', function(data) {
+
+    socket.on('newConnection', function(data) {
         clientsData[socket.id] = data;
     });
 
@@ -20,4 +20,19 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('client_disconnect', clientsData[socket.id]);
         delete clientsData[socket.id];
     });
+
+    socket.on('show_peers', function() {
+        var peers = [];
+        for (var index in clientsData) {
+            if(index != socket.id) {
+                peers.push(clientsData[index].username);
+            }
+        }
+        socket.emit('all_peers', peers);
+    });
+
+    socket.on('updateFileIndex', function(data) {
+        clientsData[socket.id].files = data;
+    });
+
 });

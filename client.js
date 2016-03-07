@@ -30,13 +30,14 @@ program
     .arguments('<port>')
     .action(function(host, port) {
         // create new socket connection
-        if(host && port) 
-            var s = io.connect(host + ':' + port);
-        else
+        if(host && port) {
+            var s = io.connect(host + ':' + port);  
+        } else {
             var s = io.connect(serverAddr + ':' + serverPort);
+        }
 
         // send new connection event to the server
-        s.emit('new-connection', config.client);
+        s.emit('newConnection', config.client);
 
         // handler for:
         // client_disconnect event 
@@ -45,7 +46,7 @@ program
         });
 
         (function command() {
-            prompt.get(['command'], function(err, r) {
+            prompt.get({name:'command', message:colors.green('>>')}, function(err, r) {
                 // early error return for exit
                 if (err) {
                     console.log('\nTo exit, press ^C again.');
@@ -57,9 +58,28 @@ program
                     case 'h':
                         console.log('show all available commands');
                         break;
-                    case 'peers':
-                        console.log('show all connected peers');
+
+                    case 'publish':
+                        console.log('Publishing files...');
+                        w.start();
+
+                        w.on('process', function(files) {
+                            fileList = files;
+                            s.emit('updateFileIndex', fileList);
+                        });
+
                         break;
+
+                    case 'peers':
+                        s.emit('show_peers', {message: 'get all peers'});
+                        s.on('all_peers', function(data) {
+                            console.log('Showing all online peers:');
+                            for (var i in data) {
+                                console.log(i +'. ' + data[i]);
+                            }
+                        });
+                        break;
+
                     case 'peek':
                         // if peers username provided
                         // show all files shared by peers
