@@ -9,15 +9,9 @@ http.listen(8000, function() {
     console.log("Server is listening on port 8000");
 });
 
-
-
 var clientsData = [];
 
 io.on('connection', function(socket) {
-
-    socket.on('ping-test', function() {
-        socket.emit('ping-reply', {message: 'ping reply from server'});
-    });
 
     // socket.on('new_connection', function(data) {
     //     clientsData[socket.id] = data;
