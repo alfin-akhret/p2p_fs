@@ -5,13 +5,14 @@
   "dependencies": {
     "colors": "^1.1.2",
     "commander": "^2.9.0",
+    "jquery": "^2.2.1",
     "prompt": "^1.0.0",
     "socket.io": "^1.4.5",
     "socket.io-p2p": "^2.2.0",
     "socket.io-p2p-server": "^1.2.0"
   },
-  "main":"./client/main.js",
+  "main": "./client/main.js",
   "devDependencies": {
-    "electron-prebuilt": "^0.36.0"  
+    "electron-prebuilt": "^0.36.0"
   }
 }
