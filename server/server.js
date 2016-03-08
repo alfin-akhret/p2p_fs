@@ -3,17 +3,17 @@ var http = require('http').Server();
 var io = require('socket.io')(http);
 var p2pServer = require('socket.io-p2p-server').Server;
 
+io.use(p2pServer); // use the p2p server
+
 http.listen(8000, function() {
     console.log("Server is listening on port 8000");
 });
 
-// io.use(p2pServer);
+
 
 var clientsData = [];
 
 io.on('connection', function(socket) {
-    console.log('new conn');
-
 
     socket.on('ping-test', function() {
         socket.emit('ping-reply', {message: 'ping reply from server'});
